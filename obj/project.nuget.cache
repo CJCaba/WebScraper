@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "sHHrA/bl2hk=",
+  "success": true,
+  "projectFilePath": "c:\\Users\\jadec\\School_Coding\\WebScraper\\WebScraper.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\jadec\\.nuget\\packages\\htmlagilitypack\\1.12.1\\htmlagilitypack.1.12.1.nupkg.sha512"
+  ],
+  "logs": []
+}

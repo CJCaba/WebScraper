@@ -1,0 +1,17 @@
+c:\Users\jadec\School_Coding\WebScraper\bin\Debug\net9.0\WebScraper.exe
+c:\Users\jadec\School_Coding\WebScraper\bin\Debug\net9.0\WebScraper.deps.json
+c:\Users\jadec\School_Coding\WebScraper\bin\Debug\net9.0\WebScraper.runtimeconfig.json
+c:\Users\jadec\School_Coding\WebScraper\bin\Debug\net9.0\WebScraper.dll
+c:\Users\jadec\School_Coding\WebScraper\bin\Debug\net9.0\WebScraper.pdb
+c:\Users\jadec\School_Coding\WebScraper\obj\Debug\net9.0\WebScraper.GeneratedMSBuildEditorConfig.editorconfig
+c:\Users\jadec\School_Coding\WebScraper\obj\Debug\net9.0\WebScraper.AssemblyInfoInputs.cache
+c:\Users\jadec\School_Coding\WebScraper\obj\Debug\net9.0\WebScraper.AssemblyInfo.cs
+c:\Users\jadec\School_Coding\WebScraper\obj\Debug\net9.0\WebScraper.csproj.CoreCompileInputs.cache
+c:\Users\jadec\School_Coding\WebScraper\obj\Debug\net9.0\WebScraper.dll
+c:\Users\jadec\School_Coding\WebScraper\obj\Debug\net9.0\refint\WebScraper.dll
+c:\Users\jadec\School_Coding\WebScraper\obj\Debug\net9.0\WebScraper.pdb
+c:\Users\jadec\School_Coding\WebScraper\obj\Debug\net9.0\WebScraper.genruntimeconfig.cache
+c:\Users\jadec\School_Coding\WebScraper\obj\Debug\net9.0\ref\WebScraper.dll
+c:\Users\jadec\School_Coding\WebScraper\bin\Debug\net9.0\HtmlAgilityPack.dll
+c:\Users\jadec\School_Coding\WebScraper\obj\Debug\net9.0\WebScraper.csproj.AssemblyReference.cache
+c:\Users\jadec\School_Coding\WebScraper\obj\Debug\net9.0\WebScraper.csproj.Up2Date
