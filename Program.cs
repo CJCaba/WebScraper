@@ -17,6 +17,9 @@ using DotNetEnv;
 
 namespace TokullectiblesScraper
 {
+    // This class is responsible for sending email notifications using SMTP.
+    // It reads SMTP configuration from environment variables.
+    // The SendAsync method sends an email with the specified subject and body.
     internal static class EmailNotifier
     {
         // Read everything from .env file
@@ -45,6 +48,8 @@ namespace TokullectiblesScraper
         }
     }
 
+    // This class represents a product with properties for its name, price, URL, and availability status.
+    // The properties are used to store the scraped data from the product page.
     public class Product
     {
         public string Name { get; set; }
@@ -60,11 +65,8 @@ namespace TokullectiblesScraper
         static async Task Main(string[] args)
         {
             // Load environment variables from .env file
-            // var root = Directory.GetCurrentDirectory();
-            // var dotenv = Path.Combine(root, ".env");
-            // DotEnv.Load(dotenv);
             DotNetEnv.Env.Load();
-            
+
             Console.WriteLine("Tokullectibles Scraper");
             Console.WriteLine("===========================");
 
@@ -109,6 +111,7 @@ namespace TokullectiblesScraper
             Console.WriteLine("\nThank you for using the Tokullectibles Scraper!");
         }
 
+        // This method monitors the availability of a product at regular intervals.
         private static async Task MonitorProductAvailability()
         {
             Console.WriteLine("Enter the URL of the product page to monitor:");
@@ -120,6 +123,7 @@ namespace TokullectiblesScraper
                 return;
             }
 
+            // Ask user for the interval and number of iterations
             Console.Write("How often (in seconds) would you like to check for availability? ");
             if (!int.TryParse(Console.ReadLine(), out int interval) || interval <= 0)
             {
@@ -148,8 +152,10 @@ namespace TokullectiblesScraper
                 cancellationTokenSource.Cancel();
             });
 
+            // Start monitoring the product availability
             try
             {
+                // Wait for the task to complete or the cancellation token to be triggered
                 while (!cancellationTokenSource.Token.IsCancellationRequested && (iterations == 0 || checkCount <= iterations))
                 {
                     var product = await ScrapeProductData(productUrl);
@@ -213,6 +219,7 @@ namespace TokullectiblesScraper
             Console.WriteLine("Monitoring stopped.\n");
         }
 
+        // This method scrapes product data from a single product page.
         private static async Task ScrapeOnce()
         {
             Console.WriteLine("Enter the URL of the product page to scrape:");
@@ -243,6 +250,7 @@ namespace TokullectiblesScraper
 
         }
 
+        // Helper function which scrapes product data from the specified product URL.
         private static async Task<Product> ScrapeProductData(string productUrl)
         {
             var productPageHtml = await HttpClient.GetStringAsync(productUrl);
