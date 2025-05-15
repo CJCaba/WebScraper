@@ -2,17 +2,49 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using MimeKit;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.ComponentModel.DataAnnotations;
+using DotNetEnv;
 
 // This is a simple web scraper that uses HtmlAgilityPack to scrape data from a webpage.
 // It fetches the HTML content of the for specified product pages found at Tokullectibles.com and extracts specific information.
 
 namespace TokullectiblesScraper
 {
+    internal static class EmailNotifier
+    {
+        // Read everything from .env file
+        public static async Task SendAsync(string subject, string body)
+        {
+            var smtpHost = Environment.GetEnvironmentVariable("SMTP_HOST");
+            var smtpPortStr = Environment.GetEnvironmentVariable("SMTP_PORT");
+            var smtpUser = Environment.GetEnvironmentVariable("SMTP_USER");
+            var smtpPass = Environment.GetEnvironmentVariable("SMTP_PASSWORD");
+            var fromEmail = Environment.GetEnvironmentVariable("EMAIL_FROM");
+            var toEmail = Environment.GetEnvironmentVariable("EMAIL_TO");
+
+            int smtpPort = int.TryParse(smtpPortStr, out int port) ? port : 587; // Default to 587 if parsing fails
+
+            var message = new MimeMessage();
+            message.From.Add(MailboxAddress.Parse(fromEmail));
+            message.To.Add(MailboxAddress.Parse(toEmail));
+            message.Subject = subject;
+            message.Body = new TextPart("plain") { Text = body };
+
+            using var client = new SmtpClient();
+            await client.ConnectAsync(smtpHost, smtpPort, SecureSocketOptions.StartTls);
+            await client.AuthenticateAsync(smtpUser, smtpPass);
+            await client.SendAsync(message);
+            await client.DisconnectAsync(true);
+        }
+    }
+
     public class Product
     {
         public string Name { get; set; }
@@ -27,6 +59,12 @@ namespace TokullectiblesScraper
         private static readonly HttpClient HttpClient = new HttpClient();
         static async Task Main(string[] args)
         {
+            // Load environment variables from .env file
+            // var root = Directory.GetCurrentDirectory();
+            // var dotenv = Path.Combine(root, ".env");
+            // DotEnv.Load(dotenv);
+            DotNetEnv.Env.Load();
+            
             Console.WriteLine("Tokullectibles Scraper");
             Console.WriteLine("===========================");
 
@@ -137,7 +175,13 @@ namespace TokullectiblesScraper
                             previousStockStatus = product.IsAvailable;
 
                             // Add logic to send a notification (e.g., email, SMS) here.
-                            Console.Beep(880, 1000); // Beep sound for notification, can be replaced eventually
+                            // Console.Beep(880, 1000); // Beep sound for notification, can be replaced eventually
+                            await EmailNotifier.SendAsync(
+                                subject: $"STOCK CHANGE DETECTED: {product.Name}",
+                                body: $"[{DateTime.Now}] STOCK CHANGE DETECTED: Product is {product.IsAvailable}\n\n{product.Url}"
+                            );
+
+                            Console.WriteLine("Email notification sent.");
                         }
                         else
                         {
@@ -190,9 +234,15 @@ namespace TokullectiblesScraper
             Console.WriteLine($"Price: {product.Price}");
             Console.WriteLine($"Availability: {product.IsAvailable}");
             Console.WriteLine($"URL: {product.Url}");
-            Console.WriteLine("===================================");
+            Console.WriteLine("===============================");
+
+            // Test email notification
+            // await EmailNotifier.SendAsync(
+            //     "Test Email", "If you're reading this, your SMTP settings work!"
+            // );
+
         }
-        
+
         private static async Task<Product> ScrapeProductData(string productUrl)
         {
             var productPageHtml = await HttpClient.GetStringAsync(productUrl);
